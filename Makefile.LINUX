@@ -21,6 +21,8 @@ OS=LINUX
 # FILE EXTENSIONS
 # Static library
 LE=.a
+# Shared library
+SLE=.so
 # Object file
 OE=.o
 # Binary executable

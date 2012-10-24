@@ -113,7 +113,7 @@ tests : tests/testdai$(EE) tests/testem/testem$(EE) tests/testbbp$(EE) $(unittes
 
 utils : utils/createfg$(EE) utils/fg2dot$(EE) utils/fginfo$(EE) utils/uai2fg$(EE)
 
-lib: $(LIB)/libdai$(LE)
+lib: $(LIB)/libdai$(LE) $(LIB)/libdai$(SLE)
 
 
 # OBJECTS
@@ -226,8 +226,11 @@ utils/uai2fg$(EE) : utils/uai2fg.cpp $(HEADERS) $(LIB)/libdai$(LE)
 
 ifneq ($(OS),WINDOWS)
 $(LIB)/libdai$(LE) : $(OBJECTS)
-	-mkdir -p lib
+	-mkdir -p $(LIB)
 	ar rcus $(LIB)/libdai$(LE) $(OBJECTS)
+$(LIB)/libdai$(SLE) : $(OBJECTS)
+	$(CC) -shared -o libdai$(SLE) $(OBJECTS)
+	mv libdai$(SLE) $(LIB)
 else
 $(LIB)/libdai$(LE) : $(OBJECTS)
 	-mkdir lib
