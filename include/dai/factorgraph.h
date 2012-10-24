@@ -251,7 +251,21 @@ class FactorGraph {
     //@{
         /// Set the content of the \a I 'th factor and make a backup of its old content if \a backup == \c true
         virtual void setFactor( size_t I, const Factor& newFactor, bool backup = false ) {
-            DAI_ASSERT( newFactor.vars() == factor(I).vars() );
+            const VarSet& newvars = newFactor.vars();
+            const VarSet& oldvars = factor(I).vars();
+            if( newvars != oldvars ) {
+                // adjust graph
+                if ( oldvars < newvars ) {// add edges
+                    VarSet addVars = newvars / oldvars;
+                    for ( VarSet::const_iterator q = addVars.begin(); q != addVars.end(); q++)
+                        _G.addEdge(findVar(*q), I);
+                }
+                else { // remove edges
+                    VarSet delVars = oldvars / newvars;
+                    for ( VarSet::const_iterator q = delVars.begin(); q != delVars.end(); q++) 
+                        _G.eraseEdge(findVar(*q), I);
+                }
+            }
             if( backup )
                 backupFactor( I );
             _factors[I] = newFactor;
@@ -288,6 +302,9 @@ class FactorGraph {
         /** \throw MULTIPLE_UNDO if a backup already exists
          */
         void backupFactors( const VarSet& ns );
+
+        /// Clears the backup copies in all factors.
+        void clearBackups();
 
         /// Restores all factors connected to a set of variables from their backups
         void restoreFactors( const VarSet& ns );
