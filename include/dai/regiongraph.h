@@ -211,6 +211,7 @@ class RegionGraph : public FactorGraph {
     //@{
         /// Set the content of the \a I 'th factor and make a backup of its old content if \a backup == \c true
         virtual void setFactor( size_t I, const Factor& newFactor, bool backup = false ) {
+			DAI_ASSERT( newFactor.vars() == factor(I).vars() );
             FactorGraph::setFactor( I, newFactor, backup );
             recomputeOR( I );
         }

@@ -464,6 +464,9 @@ void FactorGraph::backupFactors( const std::set<size_t> & facs ) {
         backupFactor( *fac );
 }
 
+void FactorGraph::clearBackups() {
+    _backup.clear();
+}
 
 bool FactorGraph::isPairwise() const {
     bool pairwise = true;

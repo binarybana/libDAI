@@ -395,7 +395,17 @@ BOOST_AUTO_TEST_CASE( BackupRestoreTest ) {
     FactorGraph G( facs );
     FactorGraph Gorg( G );
 
-    BOOST_CHECK_THROW( G.setFactor( 0, Factor( v0 ), false ), Exception );
+    // Test changing factor sizes
+    G.setFactor( 0, Factor( v012, 3.0 ), true );
+    BOOST_CHECK_EQUAL( G.factor( 0 )[0], 3.0 );
+    G.restoreFactor ( 0 );
+    BOOST_CHECK_EQUAL( G.factor(0), Gorg.factor(0) );
+
+    // Test clearing backups
+    G.backupFactors( v012 );
+    G.clearBackups();
+    BOOST_CHECK_THROW( G.restoreFactor( 0 ), Exception );
+
     G.setFactor( 0, Factor( v01, 2.0 ), false );
     BOOST_CHECK_THROW( G.restoreFactor( 0 ), Exception );
     G.setFactor( 0, Factor( v01, 3.0 ), true );
