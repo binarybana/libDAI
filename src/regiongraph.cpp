@@ -174,7 +174,7 @@ bool RegionGraph::checkCountingNumbers() const {
                 c_n += IR(beta).c();
         if( fabs(c_n - 1.0) > 1e-15 ) {
             all_valid = false;
-            cerr << "WARNING: counting numbers do not satisfy relation for " << *n << "(c_n = " << c_n << ")." << endl;
+            //cerr << "WARNING: counting numbers do not satisfy relation for " << *n << "(c_n = " << c_n << ")." << endl;
         }
     }
 
