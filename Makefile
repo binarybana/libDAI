@@ -224,13 +224,14 @@ utils/uai2fg$(EE) : utils/uai2fg.cpp $(HEADERS) $(LIB)/libdai$(LE)
 # LIBRARY
 ##########
 
+$(LIB)/libdai$(SLE) : $(OBJECTS)
+	-mkdir -p $(LIB)
+	$(CC) -shared -o libdai$(SLE) $(OBJECTS)
+	mv libdai$(SLE) $(LIB)/libdai$(SLE)
 ifneq ($(OS),WINDOWS)
 $(LIB)/libdai$(LE) : $(OBJECTS)
 	-mkdir -p $(LIB)
 	ar rcus $(LIB)/libdai$(LE) $(OBJECTS)
-$(LIB)/libdai$(SLE) : $(OBJECTS)
-	$(CC) -shared -o libdai$(SLE) $(OBJECTS)
-	mv libdai$(SLE) $(LIB)
 else
 $(LIB)/libdai$(LE) : $(OBJECTS)
 	-mkdir lib
