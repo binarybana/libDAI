@@ -417,9 +417,8 @@ void FactorGraph::clampFactor( size_t I, const vector<size_t> &is, bool backup )
 
 void FactorGraph::backupFactor( size_t I ) {
     map<size_t,Factor>::iterator it = _backup.find( I );
-    if( it != _backup.end() )
-        DAI_THROW(MULTIPLE_UNDO);
-    _backup[I] = factor(I);
+    if( it == _backup.end() )
+        _backup[I] = factor(I);
 }
 
 
