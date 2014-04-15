@@ -1,1 +1,6 @@
 Makefile.conf
+tests*
+utils*
+examples*
+lib*
+*.fg
