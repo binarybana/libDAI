@@ -631,14 +631,6 @@ BOOST_AUTO_TEST_CASE( BackupRestoreTest ) {
     BOOST_CHECK_EQUAL( G.OR(1).c(), 1 );
     BOOST_CHECK_EQUAL( G.OR(1), G.factor(1) );
 
-    // Make sure that changing the size of a factor throws an error
-    std::map<size_t, Factor> fs;
-    fs[0] = Factor( v012, 3.0 );
-    fs[2] = Factor( v1, 2.0 );
-    BOOST_CHECK_THROW( G.setFactors( fs, false ), Exception );
-    fs.clear();
-    BOOST_CHECK_THROW( G.setFactor( 0, Factor( v012 ), false ), Exception );
-    
     G.setFactor( 0, Factor( v01, 2.0 ), false );
     BOOST_CHECK_EQUAL( G.OR(0).c(), 1 );
     BOOST_CHECK_EQUAL( G.OR(0), G.factor(0) * G.factor(2) );
@@ -676,6 +668,7 @@ BOOST_AUTO_TEST_CASE( BackupRestoreTest ) {
     BOOST_CHECK_EQUAL( G.OR(1).c(), 1 );
     BOOST_CHECK_EQUAL( G.OR(1), G.factor(1) );
 
+    std::map<size_t, Factor> fs;
     fs[0] = Factor( v01, 3.0 );
     fs[2] = Factor( v1, 2.0 );
     G.setFactors( fs, false );
@@ -760,6 +753,14 @@ BOOST_AUTO_TEST_CASE( BackupRestoreTest ) {
     BOOST_CHECK_EQUAL( G.OR(0), G.factor(0) * G.factor(2) );
     BOOST_CHECK_EQUAL( G.OR(1), G.factor(1) );
     G.restoreFactors( v1 );
+    BOOST_CHECK_EQUAL( G.factor(0), Gorg.factor(0) );
+    BOOST_CHECK_EQUAL( G.factor(1), Gorg.factor(1) );
+    BOOST_CHECK_EQUAL( G.factor(2), Gorg.factor(2) );
+    BOOST_CHECK_EQUAL( G.OR(0), G.factor(0) * G.factor(2) );
+    BOOST_CHECK_EQUAL( G.OR(1), G.factor(1) );
+
+    G.setFactor( 0, Factor( v0 ), true );
+		G.restoreFactors();
     BOOST_CHECK_EQUAL( G.factor(0), Gorg.factor(0) );
     BOOST_CHECK_EQUAL( G.factor(1), Gorg.factor(1) );
     BOOST_CHECK_EQUAL( G.factor(2), Gorg.factor(2) );

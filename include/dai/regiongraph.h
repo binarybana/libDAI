@@ -211,9 +211,9 @@ class RegionGraph : public FactorGraph {
     //@{
         /// Set the content of the \a I 'th factor and make a backup of its old content if \a backup == \c true
         virtual void setFactor( size_t I, const Factor& newFactor, bool backup = false ) {
-			DAI_ASSERT( newFactor.vars() == factor(I).vars() );
+            VarSet vs = FactorGraph::factor(I).vars();
             FactorGraph::setFactor( I, newFactor, backup );
-            recomputeOR( I );
+            recomputeORs( (VarSet) newFactor.vars()|vs );
         }
 
         /// Set the contents of all factors as specified by \a facs and make a backup of the old contents if \a backup == \c true
@@ -223,6 +223,18 @@ class RegionGraph : public FactorGraph {
             for( std::map<size_t, Factor>::const_iterator fac = facs.begin(); fac != facs.end(); fac++ )
                 ns |= fac->second.vars();
             recomputeORs( ns );
+        }
+
+        /// Restores factors and recomputes outer regions
+        virtual void restoreFactors() {
+          FactorGraph::restoreFactors();
+          recomputeORs();
+        }
+
+        /// Restores factors affecting a set of variables and recomputes outer regions
+        virtual void restoreFactors(const VarSet &vs) {
+          FactorGraph::restoreFactors(vs);
+          recomputeORs(vs);
         }
     //@}
 
