@@ -1,1 +1,6 @@
 Makefile.conf
+*.o
+tests
+examples
+utils
+lib
