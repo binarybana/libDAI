@@ -21,6 +21,7 @@ Factor calcMarginal( const InfAlg &obj, const VarSet &vs, bool reInit ) {
     Factor Pvs (vs);
 
     InfAlg *clamped = obj.clone();
+    clamped->clearBackups();
     if( !reInit )
         clamped->init();
 

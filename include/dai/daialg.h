@@ -162,6 +162,8 @@ class InfAlg {
 
     /// \name Backup/restore mechanism for factors
     //@{
+        /// Clear backup factors
+        virtual void clearBackups() = 0;
         /// Make a backup copy of factor \a I
         /** \throw MULTIPLE_UNDO if a backup already exists
          */
@@ -244,6 +246,8 @@ class DAIAlg : public InfAlg, public GRM {
 
     /// \name Backup/restore mechanism for factors
     //@{
+        /// Clear backup copies of all factors 
+        void clearBackups() { GRM::clearBackups(); }
         /// Make a backup copy of factor \a I
         void backupFactor( size_t I ) { GRM::backupFactor( I ); }
         /// Make backup copies of all factors involving the variables in \a vs
