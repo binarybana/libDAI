@@ -255,7 +255,7 @@ class FactorGraph {
             const VarSet& oldvars = factor(I).vars();
             if( newvars != oldvars ) {
                 // adjust graph
-                if ( oldvars < newvars ) {// add edges
+                if ( oldvars << newvars ) {// add edges
                     VarSet addVars = newvars / oldvars;
                     for ( VarSet::const_iterator q = addVars.begin(); q != addVars.end(); q++)
                         _G.addEdge(findVar(*q), I);
